@@ -1,0 +1,11 @@
+.menu {    
+    float: left;
+    border: 1px solid;
+    width: 20%;    
+}
+.main-div {
+    /* align: absolute; */
+    border: 0px solid;
+    margin: auto;    
+    width: 50%
+}

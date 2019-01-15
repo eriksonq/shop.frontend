@@ -1,0 +1,73 @@
+
+
+
+
+<p-panel>
+    <p-header>
+        <span class="ui-panel-title" style="font-size:16px;display:inline-block;margin-top:2px">Добавление товара</span>
+    </p-header>
+        <div>
+            <h3 class="first">Наименование товара</h3>
+            <input id="input" type="text" size="50" pInputText [(ngModel)]="product.title"> 
+        </div>        
+        <div>
+            <h3 class="first">Цена</h3>
+            <input type="text" pInputText pKeyFilter="money" [(ngModel)]="product.price"> 
+        </div>
+        <div>
+            <h3>Категории</h3>
+            <p-autoComplete [(ngModel)]="selectedCategory" [suggestions]="filteredCategories"  placeholder="Выберите категорию"
+            (completeMethod)="filterCategories($event)" [size]="45" (onSelect)="categorySel($event)"
+                [minLength]="1" [dropdown]="true" field="title">
+                <ng-template let-selectedCategory pTemplate="item">
+                    <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
+                        <div style="font-size:16px;float:left;margin:10px 10px 0 0">{{selectedCategory.title}}</div>
+                    </div>
+                </ng-template>
+            </p-autoComplete>
+        </div>
+        <div>           
+            <h3>Параметры</h3>(для добавления нажмите на компонент)
+            <p-chips [(ngModel)]="product.parameters" size="80"  (onFocus)="showDialogToAddParams()">
+                <ng-template let-item pTemplate="item">
+                    {{item.categoryParamName}}:  {{item.value}} ___    
+                </ng-template>
+            </p-chips>
+        </div>
+        <div>
+            <h3 class="first">Описание</h3>
+            <textarea rows="5" cols="50" pInputTextarea [(ngModel)]="product.description"></textarea> 
+        </div>
+    <p-footer>
+        <button pButton type="button" icon="pi pi-plus" label="Добавить" (click)="saveProduct()" class="ui-button-info" style="margin-right: .25em"></button>        
+    </p-footer>
+</p-panel>
+
+<p-dialog header="Новый параметр продукта" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '300px'}">
+    <div class="ui-g ui-fluid">
+        <div class="ui-g-12">
+            <h2 class="first">Параметр категории</h2>
+            <div><p-dropdown [options]="paramsCategory" [(ngModel)]="selectedParamsCategory" [style]="{'width':'200px'}" 
+              optionLabel="title" [showClear]="true" placeholder="Выберите параметр"></p-dropdown>
+            </div>
+        </div>
+        <div class="ui-g-12">
+            <h2 class="first">Значение</h2>
+            <div *ngIf="productParam">
+                <input id="input" type="text" size="50" pInputText [(ngModel)]="productParam.value"> 
+            </div>             
+        </div>
+    </div>
+    <p-footer>
+        <div class="ui-dialog-buttonpane ui-helper-clearfix">          
+            <button type="button"  pButton icon="pi pi-check" (click)="addParam()"  label="Добавить"></button>
+        </div>
+    </p-footer>
+  </p-dialog>
+
+  <p-dialog header="Уведомление" [(visible)]="showConfirmInfo" [modal]="true">
+      <span>Товар сохранен</span>
+      <p-footer>
+          <button type="button" pButton icon="pi pi-check" (click)="showConfirmInfo=false" label="OK"></button>          
+      </p-footer>
+  </p-dialog>

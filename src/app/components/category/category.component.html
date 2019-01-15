@@ -1,0 +1,65 @@
+
+
+
+
+
+
+<p-table [columns]="cols" [value]="categories" selectionMode="single" [(selection)]="selectedCategory" [paginator]="true" [rows]="15">
+  <ng-template pTemplate="caption">
+    Категории
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+        <th style="width: 10%">
+            №
+            <p-sortIcon></p-sortIcon>
+        </th>
+        <th>
+          Наименование
+          <p-sortIcon ></p-sortIcon>
+      </th>
+    </tr>
+</ng-template>
+<ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
+  
+  <tr [pSelectableRow]="rowData">
+      <td>{{i + 1}}</td>
+      <td *ngFor="let col of columns" >{{rowData[col.field]}}</td>      
+  </tr>
+</ng-template>
+<ng-template pTemplate="summary" let-rowData>
+  <div  class="ui-g">
+      <button type="button" styleClass="ui-button-small" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Добавить"></button>
+      <button type="button" pButton icon="pi pi-times" (click)="showDialogToDel()" label="Удалить"></button>
+  </div>  
+</ng-template> 
+</p-table>
+<p-dialog header="Новая категория" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true"  [style]="{width: '300px'}">
+  <div class="ui-g ui-fluid" *ngIf="category">
+      <div class="ui-g-12">
+          <h2 class="first">Наименование</h2>
+          <div class="ui-g-12">
+              <input type="text" pInputText id="title" [(ngModel)]="category.title" size="50"/>
+          </div>
+      </div>
+      <div class="ui-g-12">
+        <h2 class="first">Параметры</h2>
+        <div class="ui-g-12">
+            <p-chips [(ngModel)] = "paramsList" (onAdd)="doParamsList()" (onRemove)="doParamsList()" size="50"></p-chips>
+        </div>
+    </div>
+      
+  </div>
+  <p-footer>
+      <div class="ui-dialog-buttonpane ui-helper-clearfix">          
+          <button type="button"  pButton icon="pi pi-check" (click)="save()" label="Сохранить"></button>
+      </div>
+  </p-footer>
+</p-dialog>
+
+<p-confirmDialog #cd header="Confirmation" icon="pi pi-exclamation-triangle">
+    <p-footer>
+        <button type="button" pButton icon="pi pi-check" label="Да" (click)="cd.accept()"></button>
+        <button type="button" pButton icon="pi pi-times" label="Нет" (click)="cd.reject()"></button>        
+    </p-footer>
+</p-confirmDialog>

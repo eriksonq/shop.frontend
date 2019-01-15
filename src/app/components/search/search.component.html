@@ -1,0 +1,45 @@
+
+
+
+
+<p-panel header="Фильтр" [toggleable]="true" [style]="{'margin-bottom':'20px'}">
+    <h2 class="first">Категория</h2>
+    <div><p-dropdown [options]="categories" [(ngModel)]="selectedCategory" [style]="{'width':'200px'}"  (onChange)="doFilter()" 
+      optionLabel="title" [showClear]="true" placeholder="Выберите параметр"></p-dropdown>
+    </div>
+    <div *ngFor="let item of selectedCategory?.parameters">        
+          {{item.title}}<input type="text" pInputText id="title" [(ngModel)]="item.value" size="50"/>        
+    </div>
+    <div>
+        <button type="button" pButton icon="pi pi-times" label="Фильтр" (click)="doFilter()"></button>
+    </div>
+</p-panel>
+
+<p-table [columns]="cols" [value]="products" selectionMode="single" [(selection)]="selectedProduct" [paginator]="true" [rows]="15">
+    <ng-template pTemplate="caption">
+      Товары
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 10%">№<p-sortIcon></p-sortIcon></th>
+        <th>Наименование<p-sortIcon ></p-sortIcon></th>
+        <th>Описание<p-sortIcon ></p-sortIcon></th>
+        <th>Цена<p-sortIcon ></p-sortIcon></th>
+        <th>Категория<p-sortIcon ></p-sortIcon></th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns" let-i="rowIndex">
+    
+    <tr [pSelectableRow]="rowData">
+        <td>{{i + 1}}</td>
+        <td *ngFor="let col of columns" >{{rowData[col.field]}}</td>      
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary" let-rowData>
+    <div  class="ui-g">
+        <button type="button" styleClass="ui-button-small" pButton icon="pi pi-plus" (click)="showDialogToAdd()" label="Добавить"></button>
+        <button type="button" pButton icon="pi pi-times" (click)="showDialogToDel()" label="Удалить"></button>
+    </div>  
+  </ng-template> 
+  </p-table>
+  
